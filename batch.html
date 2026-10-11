@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Batch Processor — ALIP ENCRYPTOR</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <div class="nav-container">
+      <a href="index.html" class="logo">ALIP ENCRYPTOR</a>
+      <button class="menu-toggle">☰</button>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="encrypt.html">Encrypt File</a></li>
+          <li><a href="decrypt.html">Decrypt File</a></li>
+          <li><a href="obfuscator.html">Code Obfuscator</a></li>
+          <li><a href="batch.html">Batch Processor</a></li>
+          <li><a href="history.html">History</a></li>
+          <li><a href="documentation.html">Docs & FAQ</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="card">
+      <h2>Batch File Processor</h2>
+      <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Unggah banyak file sekaligus untuk dienkripsi atau diproses bersamaan.</p>
+
+      <div class="dropzone" id="batchDrop">
+        <p>Pilih beberapa file sekaligus</p>
+        <input type="file" id="batchInput" multiple style="display: none;">
+      </div>
+
+      <div class="form-group" style="margin-top: 1.5rem;">
+        <label>Password Batch Enkripsi</label>
+        <input type="password" id="batchPassword" class="form-control" placeholder="Password untuk seluruh file">
+      </div>
+
+      <div id="batchList" style="margin: 1rem 0; color: var(--text-muted); font-size: 0.95rem;"></div>
+
+      <button id="startBatch" class="btn">START BATCH ENCRYPT</button>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 ALIP ENCRYPTOR.</p>
+  </footer>
+
+  <script src="js/app.js"></script>
+  <script src="js/encrypt.js"></script>
+  <script src="js/download.js"></script>
+  <script>
+    let files = [];
+    const batchDrop = document.getElementById('batchDrop');
+    const batchInput = document.getElementById('batchInput');
+    const batchList = document.getElementById('batchList');
+    const startBatch = document.getElementById('startBatch');
+    const batchPassword = document.getElementById('batchPassword');
+
+    batchDrop.addEventListener('click', () => batchInput.click());
+    batchInput.addEventListener('change', (e) => {
+      files = Array.from(e.target.files);
+      batchList.innerText = `${files.length} file dipilih.`;
+    });
+
+    startBatch.addEventListener('click', async () => {
+      if (files.length === 0) {
+        alert('Pilih file terlebih dahulu.');
+        return;
+      }
+      const pwd = batchPassword.value;
+      if (!pwd) {
+        alert('Masukkan password batch.');
+        return;
+      }
+
+      startBatch.disabled = true;
+      let successCount = 0;
+
+      for (let f of files) {
+        try {
+          const encBlob = await encryptFile(f, pwd);
+          downloadBlob(encBlob, f.name + '.alipenc');
+          StatsTracker.update(true, f.size);
+          successCount++;
+        } catch (e) {
+          StatsTracker.update(false);
+        }
+      }
+
+      alert(`Batch selesai! ${successCount} dari ${files.length} file berhasil dienkripsi dan diunduh.`);
+      startBatch.disabled = false;
+    });
+  </script>
+</body>
+</html>

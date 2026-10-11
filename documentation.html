@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Documentation & FAQ — ALIP ENCRYPTOR</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <div class="nav-container">
+      <a href="index.html" class="logo">ALIP ENCRYPTOR</a>
+      <button class="menu-toggle">☰</button>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="encrypt.html">Encrypt File</a></li>
+          <li><a href="decrypt.html">Decrypt File</a></li>
+          <li><a href="obfuscator.html">Code Obfuscator</a></li>
+          <li><a href="batch.html">Batch Processor</a></li>
+          <li><a href="history.html">History</a></li>
+          <li><a href="documentation.html">Docs & FAQ</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="card">
+      <h2>Dokumentasi & Pertanyaan Umum (FAQ)</h2>
+      
+      <h3 style="color: var(--accent-cyan); margin-top: 1.5rem;">1. Apakah aman menggunakan ALIP ENCRYPTOR?</h3>
+      <p style="color: var(--text-muted); margin-top: 0.5rem;">Sangat aman. Seluruh proses enkripsi dan dekripsi berjalan secara lokal di browser Anda (Client-Side) menggunakan Web Crypto API standar industri. File Anda tidak pernah diunggah ke server mana pun.</p>
+
+      <h3 style="color: var(--accent-cyan); margin-top: 1.5rem;">2. Apa itu format .alipenc?</h3>
+      <p style="color: var(--text-muted); margin-top: 0.5rem;">Format kontainer kustom yang menyimpan metadata nama file asli, salt, IV acak kriptografis, serta cipher teks dari AES-256-GCM.</p>
+
+      <h3 style="color: var(--accent-cyan); margin-top: 1.5rem;">3. Apakah Obfuscation sama dengan Enkripsi?</h3>
+      <p style="color: var(--text-muted); margin-top: 0.5rem;">Tidak. Obfuscation hanya mempersulit pembacaan kode sumber oleh manusia, sedangkan enkripsi mengunci data secara total menggunakan kunci rahasia.</p>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 ALIP ENCRYPTOR.</p>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

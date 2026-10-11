@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Code Obfuscator — ALIP ENCRYPTOR</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <div class="nav-container">
+      <a href="index.html" class="logo">ALIP ENCRYPTOR</a>
+      <button class="menu-toggle">☰</button>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="encrypt.html">Encrypt File</a></li>
+          <li><a href="decrypt.html">Decrypt File</a></li>
+          <li><a href="obfuscator.html">Code Obfuscator</a></li>
+          <li><a href="batch.html">Batch Processor</a></li>
+          <li><a href="history.html">History</a></li>
+          <li><a href="documentation.html">Docs & FAQ</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="card">
+      <h2>Code Obfuscator & Minifier</h2>
+      <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Lindungi kode sumber JavaScript, HTML, CSS, Python, atau bahasa lainnya dari pembacaan langsung.</p>
+
+      <div class="form-group">
+        <label>Pilih Bahasa</label>
+        <select id="langSelect" class="form-control">
+          <option value="javascript">JavaScript (JS)</option>
+          <option value="html">HTML</option>
+          <option value="css">CSS</option>
+          <option value="python">Python</option>
+          <option value="json">JSON</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Tingkat Perlindungan</label>
+        <select id="levelSelect" class="form-control">
+          <option value="medium">Sedang (Minifikasi & Struktur)</option>
+          <option value="high">Tinggi (Transformasi / Enkode Total)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Kode Sumber Masukan</label>
+        <textarea id="sourceCode" class="form-control" rows="8" placeholder="Tempel kode Anda di sini atau unggah file..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <input type="file" id="codeFile" class="form-control" style="padding: 0.5rem;">
+      </div>
+
+      <div class="btn-group" style="justify-content: flex-start; margin-top: 1rem;">
+        <button id="startObf" class="btn">START OBFUSCATOR</button>
+        <button id="copyBtn" class="btn btn-secondary">COPY RESULT</button>
+        <button id="downloadBtn" class="btn btn-secondary">DOWNLOAD FILE</button>
+      </div>
+
+      <div class="form-group" style="margin-top: 2rem;">
+        <label>Hasil Obfuscation</label>
+        <textarea id="resultCode" class="form-control" rows="8" readonly placeholder="Hasil akan muncul di sini..."></textarea>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 ALIP ENCRYPTOR.</p>
+  </footer>
+
+  <script src="js/app.js"></script>
+  <script src="js/obfuscator.js"></script>
+  <script src="js/download.js"></script>
+  <script>
+    const codeFile = document.getElementById('codeFile');
+    const sourceCode = document.getElementById('sourceCode');
+    const resultCode = document.getElementById('resultCode');
+    const langSelect = document.getElementById('langSelect');
+    const levelSelect = document.getElementById('levelSelect');
+    const startObf = document.getElementById('startObf');
+    const copyBtn = document.getElementById('copyBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+
+    codeFile.addEventListener('change', (e) => {
+      const f = e.target.files[0];
+      if (f) {
+        const reader = new FileReader();
+        reader.onload = (evt) => {
+          sourceCode.value = evt.target.result;
+        };
+        reader.readAsText(f);
+      }
+    });
+
+    startObf.addEventListener('click', () => {
+      const code = sourceCode.value;
+      if (!code.trim()) {
+        alert('Masukkan kode sumber terlebih dahulu.');
+        return;
+      }
+      const lang = langSelect.value;
+      const level = levelSelect.value;
+
+      try {
+        const res = obfuscateCode(code, lang, level);
+        resultCode.value = res;
+        StatsTracker.update(true, code.length);
+        alert('Obfuscation berhasil!');
+      } catch (err) {
+        StatsTracker.update(false);
+        alert('Gagal memproses: ' + err.message);
+      }
+    });
+
+    copyBtn.addEventListener('click', () => {
+      if (!resultCode.value) return;
+      navigator.clipboard.writeText(resultCode.value);
+      alert('Hasil disalin ke clipboard!');
+    });
+
+    downloadBtn.addEventListener('click', () => {
+      if (!resultCode.value) return;
+      const lang = langSelect.value;
+      const extMap = { javascript: 'js', html: 'html', css: 'css', python: 'py', json: 'json' };
+      const ext = extMap[lang] || 'txt';
+      const blob = new Blob([resultCode.value], { type: 'text/plain' });
+      downloadBlob(blob, `protected_code.${ext}`);
+    });
+  </script>
+</body>
+</html>

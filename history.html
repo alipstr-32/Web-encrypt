@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>History — ALIP ENCRYPTOR</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <div class="nav-container">
+      <a href="index.html" class="logo">ALIP ENCRYPTOR</a>
+      <button class="menu-toggle">☰</button>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="encrypt.html">Encrypt File</a></li>
+          <li><a href="decrypt.html">Decrypt File</a></li>
+          <li><a href="obfuscator.html">Code Obfuscator</a></li>
+          <li><a href="batch.html">Batch Processor</a></li>
+          <li><a href="history.html">History</a></li>
+          <li><a href="documentation.html">Docs & FAQ</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="card">
+      <h2>Statistik & Riwayat Sesi</h2>
+      <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Catatan aktivitas pemrosesan file pada browser Anda saat ini.</p>
+      
+      <div id="statsSummary" style="margin-bottom: 1.5rem; line-height: 1.8;"></div>
+
+      <button id="clearHistory" class="btn btn-danger">RESET STATISTIK</button>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 ALIP ENCRYPTOR.</p>
+  </footer>
+
+  <script src="js/app.js"></script>
+  <script>
+    const s = StatsTracker.getStats();
+    const summary = document.getElementById('statsSummary');
+    summary.innerHTML = `
+      <strong>Total Diproses:</strong> ${s.processed} file<br>
+      <strong>Berhasil:</strong> ${s.success} proses<br>
+      <strong>Gagal:</strong> ${s.failed} proses<br>
+      <strong>Total Ukuran Diproses:</strong> ${formatBytes(s.bytes)}
+    `;
+
+    document.getElementById('clearHistory').addEventListener('click', () => {
+      localStorage.removeItem('alip_stats');
+      location.reload();
+    });
+  </script>
+</body>
+</html>

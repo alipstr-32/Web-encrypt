@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Encrypt File — ALIP ENCRYPTOR</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <div class="nav-container">
+      <a href="index.html" class="logo">ALIP ENCRYPTOR</a>
+      <button class="menu-toggle">☰</button>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="encrypt.html">Encrypt File</a></li>
+          <li><a href="decrypt.html">Decrypt File</a></li>
+          <li><a href="obfuscator.html">Code Obfuscator</a></li>
+          <li><a href="batch.html">Batch Processor</a></li>
+          <li><a href="history.html">History</a></li>
+          <li><a href="documentation.html">Docs & FAQ</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="card">
+      <h2>Universal File Encryption</h2>
+      <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Pilih file apa saja (TXT, PDF, JPG, PNG, ZIP, MP4, dll.) dan amankan dengan AES-256-GCM.</p>
+      
+      <div class="dropzone" id="dropzone">
+        <p>Seret file ke sini atau <span style="color: var(--accent-cyan); text-decoration: underline;">klik untuk memilih file</span></p>
+        <input type="file" id="fileInput" style="display: none;">
+      </div>
+
+      <div id="fileInfo" style="margin-top: 1rem; display: none; color: var(--accent-cyan);">
+        File dipilih: <span id="fileName"></span> (<span id="fileSize"></span>)
+      </div>
+
+      <div class="form-group" style="margin-top: 1.5rem;">
+        <label>Password Enkripsi</label>
+        <input type="password" id="password" class="form-control" placeholder="Masukkan password kuat">
+      </div>
+
+      <div class="form-group">
+        <label>Konfirmasi Password</label>
+        <input type="password" id="confirmPassword" class="form-control" placeholder="Ulangi password">
+      </div>
+
+      <div class="progress-container" id="progressContainer">
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="progressBar"></div>
+        </div>
+        <div class="status-text" id="statusText">Memproses enkripsi...</div>
+      </div>
+
+      <div class="btn-group" style="justify-content: flex-start; margin-top: 1.5rem;">
+        <button id="startBtn" class="btn">START ENCRYPT</button>
+        <button id="resetBtn" class="btn btn-secondary">RESET</button>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 ALIP ENCRYPTOR.</p>
+  </footer>
+
+  <script src="js/app.js"></script>
+  <script src="js/encrypt.js"></script>
+  <script src="js/download.js"></script>
+  <script>
+    let selectedFile = null;
+    const dropzone = document.getElementById('dropzone');
+    const fileInput = document.getElementById('fileInput');
+    const fileInfo = document.getElementById('fileInfo');
+    const fileNameSpan = document.getElementById('fileName');
+    const fileSizeSpan = document.getElementById('fileSize');
+    const startBtn = document.getElementById('startBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const passwordInput = document.getElementById('password');
+    const confirmInput = document.getElementById('confirmPassword');
+    const progressContainer = document.getElementById('progressContainer');
+    const progressBar = document.getElementById('progressBar');
+    const statusText = document.getElementById('statusText');
+
+    dropzone.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', (e) => {
+      if (e.target.files.length > 0) {
+        selectedFile = e.target.files[0];
+        fileNameSpan.innerText = selectedFile.name;
+        fileSizeSpan.innerText = formatBytes(selectedFile.size);
+        fileInfo.style.display = 'block';
+      }
+    });
+
+    resetBtn.addEventListener('click', () => {
+      selectedFile = null;
+      fileInput.value = '';
+      fileInfo.style.display = 'none';
+      passwordInput.value = '';
+      confirmInput.value = '';
+      progressContainer.style.display = 'none';
+      startBtn.disabled = false;
+    });
+
+    startBtn.addEventListener('click', async () => {
+      if (!selectedFile) {
+        alert('Silakan pilih file terlebih dahulu.');
+        return;
+      }
+      const pwd = passwordInput.value;
+      const cpwd = confirmInput.value;
+      if (!pwd || pwd !== cpwd) {
+        alert('Password kosong atau tidak cocok.');
+        return;
+      }
+
+      startBtn.disabled = true;
+      progressContainer.style.display = 'block';
+      progressBar.style.width = '30%';
+      statusText.innerText = 'Menurunkan kunci kriptografi & mengenkripsi...';
+
+      try {
+        await new Promise(r => setTimeout(r, 400));
+        progressBar.style.width = '70%';
+        
+        const encryptedBlob = await encryptFile(selectedFile, pwd);
+        
+        progressBar.style.width = '100%';
+        statusText.innerText = 'Enkripsi berhasil! Mengunduh file .alipenc...';
+        
+        downloadBlob(encryptedBlob, selectedFile.name + '.alipenc');
+        StatsTracker.update(true, selectedFile.size);
+
+        setTimeout(() => {
+          alert('File berhasil dienkripsi dan diunduh!');
+          progressContainer.style.display = 'none';
+          startBtn.disabled = false;
+        }, 500);
+      } catch (err) {
+        StatsTracker.update(false);
+        alert('Error: ' + err.message);
+        progressContainer.style.display = 'none';
+        startBtn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "alip-encryptor",
+  "version": "1.0.0",
+  "description": "Professional Web Platform for File Encryption, Decryption, and Code Obfuscation",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve .",
+    "build": "echo 'Static build ready for deployment'"
+  },
+  "keywords": ["encryption", "aes-256", "obfuscator", "security", "crypto"],
+  "author": "Alip Encryptor Team",
+  "license": "MIT",
+  "dependencies": {
+    "javascript-obfuscator": "^4.1.0",
+    "jszip": "^3.10.1"
+  }
+}

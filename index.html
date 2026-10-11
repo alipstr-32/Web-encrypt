@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ALIP ENCRYPTOR — Professional File Encryption & Obfuscator</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <div class="nav-container">
+      <a href="index.html" class="logo">
+        <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+        ALIP ENCRYPTOR
+      </a>
+      <button class="menu-toggle">☰</button>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="encrypt.html">Encrypt File</a></li>
+          <li><a href="decrypt.html">Decrypt File</a></li>
+          <li><a href="obfuscator.html">Code Obfuscator</a></li>
+          <li><a href="batch.html">Batch Processor</a></li>
+          <li><a href="history.html">History</a></li>
+          <li><a href="documentation.html">Docs & FAQ</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <section class="hero">
+      <h1>Secure Encryption & Code Obfuscation</h1>
+      <p>Platform online profesional berbasis Web Crypto API untuk mengenkripsi file, mendekripsi arsip, dan mengamankan kode sumber secara instan tanpa Termux atau server lokal.</p>
+      <div class="btn-group">
+        <a href="encrypt.html" class="btn">Start Encrypt</a>
+        <a href="decrypt.html" class="btn btn-secondary">Start Decrypt</a>
+        <a href="obfuscator.html" class="btn btn-secondary">Start Obfuscator</a>
+      </div>
+    </section>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <h3 id="stat-processed">0</h3>
+        <p>Total File Diproses</p>
+      </div>
+      <div class="stat-card">
+        <h3 id="stat-success">0</h3>
+        <p>Berhasil</p>
+      </div>
+      <div class="stat-card">
+        <h3 id="stat-failed">0</h3>
+        <p>Gagal / Dibatalkan</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Fitur Unggulan Platform</h2>
+      <p style="color: var(--text-muted); line-height: 1.6;">
+        ALIP ENCRYPTOR menggunakan standar kriptografi modern <strong>AES-256-GCM</strong> dengan derivasi kunci PBKDF2. Semua proses berjalan secara lokal di perangkat Anda (Client-Side), menjamin kerahasiaan penuh tanpa ada file atau password yang dikirim ke server.
+      </p>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 ALIP ENCRYPTOR. Secure Web Security Platform. All rights reserved.</p>
+  </footer>
+
+  <script src="js/app.js"></script>
+  <script>
+    const s = StatsTracker.getStats();
+    document.getElementById('stat-processed').innerText = s.processed;
+    document.getElementById('stat-success').innerText = s.success;
+    document.getElementById('stat-failed').innerText = s.failed;
+  </script>
+</body>
+</html>
